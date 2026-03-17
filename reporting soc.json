@@ -1,0 +1,618 @@
+{
+  "name": "reporting soc",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah asisten SOC yang bertugas mengekstrak data laporan insiden keamanan ke format JSON murni. JANGAN berikan kalimat pembuka atau penutup. Cukup berikan objek JSON.\n\nAturan Ekstraksi Data:\nDATE: Ambil dari 'Timestamp', ubah ke format DD-MMM-YY (Contoh: 14-Mar-26).\nEVENT TIME: Ambil jam:menit dari 'Timestamp' (Contoh: 21:37).\nTICKET DATE & EVENT TIME: Isi sama dengan format DATE (DD-MMM-YY).\nTICKET : Ambil dari TICKET.\nKODE REPORT: Ambil dari 'Ticket Id'.\nCOUNTRY: Ambil nama negara di dalam kurung pada bagian 'IP Address' atau 'Source IP'.\nSRC IP: Ambil angka IP saja dari bagian 'IP Address' atau 'Source IP'.\nDST IP: Ambil angka IP saja dari bagian 'Destination IP'.\nSRC PORT: Ambil angka dari 'Source Port'.\nDST PORT: Ambil angka dari 'Destination Port'.\nALERT SCORE: Ambil angka dari 'Rule Level'.\nALERT TYPE: Ambil dari 'Severity'.\nEXPLOIT SIGNATURE: Ambil dari 'Signature'.\nSTATUS EVENT: Selalu isi dengan \"InProgress\".\nFIELD LAINNYA: Jika tidak ada di laporan, isi dengan \"-\".\n\nOUTPUT HARUS DALAM FORMAT JSON SEPERTI INI:\n{\n  \"NO\": 0,\n  \"DATE\": \"\",\n  \"EVENT_TIME\": \"\",\n  \"TICKET_DATE_EVENT_TIME\": \"\",\n  \"SOC_RESPONSE_TIME\": \"-\",\n  \"KODE_REPORT\": \"\",\n  \"TICKET\": \"-\",\n  \"COUNTRY\": \"\",\n  \"SRC_IP\": \"\",\n  \"DST_IP\": \"\",\n  \"SRC_PORT\": \"\",\n  \"DST_PORT\": \"\",\n  \"ALERT_SCORE\": \"\",\n  \"ALERT_TYPE\": \"\",\n  \"PHASE_KILL_CHAIN\": \"-\",\n  \"EXPLOIT_SIGNATURE\": \"\",\n  \"FILE_NAME\": \"-\",\n  \"CVE\": \"-\",\n  \"STATUS_VIRUSTOTAL\": \"-\",\n  \"STATUS_KASPERSKY\": \"-\",\n  \"STATUS_EVENT\": \"InProgress\",\n  \"THREAT_CATEGORY\": \"-\",\n  \"ACTION_SOAR\": \"-\"\n}\t"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5efe9dc6-dd81-45c6-8bfb-c26ba506ccfd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        208,
+        208
+      ],
+      "id": "89b7d8db-635f-4104-85f2-4ae773a57b72",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "fyb2njz8QPiN5Zwf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE",
+          "mode": "list",
+          "cachedResultName": "example:",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "DATE": "={{ $json.DATE }}",
+            "EVENT TIME": "={{ $json.EVENT_TIME }}",
+            "TICKET DATE & TIME": "={{ $json.TICKET_DATE_EVENT_TIME }}",
+            "KODE REPORT": "={{ $json.KODE_REPORT }}",
+            "COUNTRY": "={{ $json.COUNTRY }}",
+            "SRC IP": "={{ $json.SRC_IP }}",
+            "DST IP": "={{ $json.DST_IP }}",
+            "SRC PORT": "={{ $json.SRC_PORT }}",
+            "DST PORT": "={{ $json.DST_PORT }}",
+            "ALERT SCORE": "={{ $json.ALERT_SCORE }}",
+            "ALERT TYPE": "={{ $json.ALERT_TYPE }}",
+            "EXPLOIT SIGNATURE": "={{ $json.EXPLOIT_SIGNATURE }}",
+            "STATUS\nEVENT": "={{ $json.STATUS_EVENT }}",
+            "PHASE KILL CHAIN": "=-",
+            "TACTIC": "-",
+            "FILE NAME": "={{ $json.FILE_NAME }}",
+            "CVE": "={{ $json.CVE }}",
+            "STATUS\nVIRUSTOTAL": "={{ $json.STATUS_VIRUSTOTAL }}",
+            "STATUS\nKASPERSKY\n(CATEGORY TECHNIQUE)": "={{ $json.STATUS_KASPERSKY }}",
+            "THREAT CATEGORY": "={{ $json.THREAT_CATEGORY }}",
+            "ACTION SOAR": "={{ $json.ACTION_SOAR }}",
+            "SOC RESPONSE TIME": "-",
+            "TICKET": "={{ $json.TICKET }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NO",
+              "displayName": "NO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "DATE",
+              "displayName": "DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EVENT TIME",
+              "displayName": "EVENT TIME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TICKET DATE & TIME",
+              "displayName": "TICKET DATE & TIME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SOC RESPONSE TIME",
+              "displayName": "SOC RESPONSE TIME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "KODE REPORT",
+              "displayName": "KODE REPORT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TICKET",
+              "displayName": "TICKET",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "COUNTRY",
+              "displayName": "COUNTRY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SRC IP",
+              "displayName": "SRC IP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DST IP",
+              "displayName": "DST IP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SRC PORT",
+              "displayName": "SRC PORT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DST PORT",
+              "displayName": "DST PORT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ALERT SCORE",
+              "displayName": "ALERT SCORE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ALERT TYPE",
+              "displayName": "ALERT TYPE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PHASE KILL CHAIN",
+              "displayName": "PHASE KILL CHAIN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TACTIC",
+              "displayName": "TACTIC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EXPLOIT SIGNATURE",
+              "displayName": "EXPLOIT SIGNATURE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FILE NAME",
+              "displayName": "FILE NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CVE",
+              "displayName": "CVE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS\nVIRUSTOTAL",
+              "displayName": "STATUS\nVIRUSTOTAL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS\nKASPERSKY\n(CATEGORY TECHNIQUE)",
+              "displayName": "STATUS\nKASPERSKY\n(CATEGORY TECHNIQUE)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS\nEVENT",
+              "displayName": "STATUS\nEVENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "THREAT CATEGORY",
+              "displayName": "THREAT CATEGORY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ACTION SOAR",
+              "displayName": "ACTION SOAR",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS\nALIENVAULT\n(TECHNIQUE / VIRUS)",
+              "displayName": "STATUS\nALIENVAULT\n(TECHNIQUE / VIRUS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "EVEN DESCRIPTION",
+              "displayName": "EVEN DESCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MITIGATION ACTION",
+              "displayName": "MITIGATION ACTION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MITIGATION DATE",
+              "displayName": "MITIGATION DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MITIGATION STATUS",
+              "displayName": "MITIGATION STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        0
+      ],
+      "id": "79148437-964b-4a40-9438-2fb958246bb9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1Iwwb0Nh9QRt4wUd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "801e0b8d-61a8-434e-9d15-cf651948c018",
+              "name": "DATE",
+              "value": "={{ JSON.parse($json.output).DATE }}",
+              "type": "string"
+            },
+            {
+              "id": "1c7bb449-4cb9-43fe-9b2f-15bc0f4205ea",
+              "name": "EVENT_TIME",
+              "value": "={{ JSON.parse($json.output).EVENT_TIME }}",
+              "type": "string"
+            },
+            {
+              "id": "ed9408a1-0879-41aa-8795-988fe3a30ecd",
+              "name": "TICKET_DATE_EVENT_TIME",
+              "value": "={{ JSON.parse($json.output).TICKET_DATE_EVENT_TIME }}",
+              "type": "string"
+            },
+            {
+              "id": "fe997fb1-1d90-448d-a477-1fcd75b88533",
+              "name": "SOC_RESPONSE_TIME",
+              "value": "={{ JSON.parse($json.output).SOC_RESPONSE_TIME }}",
+              "type": "string"
+            },
+            {
+              "id": "759fe58e-8bdf-4e3a-9670-721b2afb1309",
+              "name": "KODE_REPORT",
+              "value": "={{ JSON.parse($json.output).KODE_REPORT }}",
+              "type": "string"
+            },
+            {
+              "id": "4007f01c-a9b0-4c33-91cd-c12b897082ac",
+              "name": "TICKET",
+              "value": "={{ JSON.parse($json.output).TICKET }}",
+              "type": "string"
+            },
+            {
+              "id": "733eb1d8-8511-4182-8828-b5dbd8c348ce",
+              "name": "COUNTRY",
+              "value": "={{ JSON.parse($json.output).COUNTRY }}",
+              "type": "string"
+            },
+            {
+              "id": "1cbc9f2d-ef74-4fca-834d-48e93feff069",
+              "name": "SRC_IP",
+              "value": "={{ JSON.parse($json.output).SRC_IP }}",
+              "type": "string"
+            },
+            {
+              "id": "9380896c-0e4a-4532-b366-d5c759fd52dc",
+              "name": "DST_IP",
+              "value": "={{ JSON.parse($json.output).DST_IP }}",
+              "type": "string"
+            },
+            {
+              "id": "cc0fa4f5-cc9c-424d-ac02-a1c5a319e03f",
+              "name": "SRC_PORT",
+              "value": "={{ JSON.parse($json.output).SRC_PORT }}",
+              "type": "string"
+            },
+            {
+              "id": "5b4cf6f8-5b4e-40e9-bdc9-910547d802b7",
+              "name": "DST_PORT",
+              "value": "={{ JSON.parse($json.output).DST_PORT }}",
+              "type": "string"
+            },
+            {
+              "id": "ac464ecd-c9b5-4b84-88cf-0d25126bee84",
+              "name": "ALERT_SCORE",
+              "value": "={{ JSON.parse($json.output).ALERT_SCORE }}",
+              "type": "string"
+            },
+            {
+              "id": "2b698d96-fa45-4ac3-8f0c-3a9e55c4ff7f",
+              "name": "ALERT_TYPE",
+              "value": "={{ JSON.parse($json.output).ALERT_TYPE }}",
+              "type": "string"
+            },
+            {
+              "id": "65ce69a8-5fd8-4c20-ab1b-34f44b3edf4d",
+              "name": "EXPLOIT_SIGNATURE",
+              "value": "={{ JSON.parse($json.output).EXPLOIT_SIGNATURE }}",
+              "type": "string"
+            },
+            {
+              "id": "c296126b-9714-4a19-a903-ba87d3a57c55",
+              "name": "FILE_NAME",
+              "value": "={{ JSON.parse($json.output).FILE_NAME }}",
+              "type": "string"
+            },
+            {
+              "id": "8f120bf1-f56c-4579-a95e-7ee871645a13",
+              "name": "CVE",
+              "value": "={{ JSON.parse($json.output).CVE }}",
+              "type": "string"
+            },
+            {
+              "id": "d9c4ac3c-f98b-4880-b6ec-de60459ede92",
+              "name": "STATUS_VIRUSTOTAL",
+              "value": "={{ JSON.parse($json.output).STATUS_VIRUSTOTAL }}",
+              "type": "string"
+            },
+            {
+              "id": "b27abad3-d51b-44c8-bf37-ed84a9d81434",
+              "name": "STATUS_KASPERSKY",
+              "value": "={{ JSON.parse($json.output).STATUS_KASPERSKY }}",
+              "type": "string"
+            },
+            {
+              "id": "0e0fbcf0-7485-44b3-81ac-bd73431c3906",
+              "name": "STATUS_EVENT",
+              "value": "={{ JSON.parse($json.output).STATUS_EVENT }}",
+              "type": "string"
+            },
+            {
+              "id": "ecfc5c2d-d106-4578-8728-14a0d5e3aa5d",
+              "name": "THREAT_CATEGORY",
+              "value": "={{ JSON.parse($json.output).THREAT_CATEGORY }}",
+              "type": "string"
+            },
+            {
+              "id": "d0aace40-d585-499a-bb92-a220954b5a1c",
+              "name": "ACTION_SOAR",
+              "value": "={{ JSON.parse($json.output).ACTION_SOAR }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "a51dc32b-38d3-40b4-9180-aa1f6b662aea",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "🤖\nPunten socbot is here yah! 👋\nMasukan reportannya atau MBG mu yang lezzat itu saya ambil!",
+        "options": {
+          "inputPlaceholder": "Masukan bagian datanya saja tidak perlu semua...",
+          "subtitle": "Automated Incident Reporting System",
+          "title": "socbot👋 \n Intelligent Assistant",
+          "customCss": ":root {\n\n  /* Colors */\n\n  --chat--color--primary: #e74266;\n\n  --chat--color--primary-shade-50: #db4061;\n\n  --chat--color--primary--shade-100: #cf3c5c;\n\n  --chat--color--secondary: #20b69e;\n\n  --chat--color-secondary-shade-50: #1ca08a;\n\n  --chat--color-white: #fff;\n\n  --chat--color-light: #f2f4f8;\n\n  --chat--color-light-shade-50: #e6e9f1;\n\n  --chat--color-light-shade-100: #c2c5cc;\n\n  --chat--color-medium: #d2d4d9;\n\n  --chat--color-dark: #101330;\n\n  --chat--color-disabled: #d2d4d9;\n\n  --chat--color-typing: #404040;\n\n\n\n  /* Base Layout */\n\n  --chat--spacing: 1rem;\n\n  --chat--border-radius: 0.25rem;\n\n  --chat--transition-duration: 0.15s;\n\n  --chat--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;\n\n\n\n  /* Window Dimensions */\n\n  --chat--window--width: 400px;\n\n  --chat--window--height: 600px;\n\n  --chat--window--bottom: var(--chat--spacing);\n\n  --chat--window--right: var(--chat--spacing);\n\n  --chat--window--z-index: 9999;\n\n  --chat--window--border: 1px solid var(--chat--color-light-shade-50);\n\n  --chat--window--border-radius: var(--chat--border-radius);\n\n  --chat--window--margin-bottom: var(--chat--spacing);\n\n\n\n  /* Header Styles */\n\n  --chat--header-height: auto;\n\n  --chat--header--padding: var(--chat--spacing);\n\n  --chat--header--background: var(--chat--color-dark);\n\n  --chat--header--color: var(--chat--color-light);\n\n  --chat--header--border-top: none;\n\n  --chat--header--border-bottom: none;\n\n  --chat--header--border-left: none;\n\n  --chat--header--border-right: none;\n\n  --chat--heading--font-size: 2em;\n\n  --chat--subtitle--font-size: inherit;\n\n  --chat--subtitle--line-height: 1.8;\n\n\n\n  /* Message Styles */\n\n  --chat--message--font-size: 1rem;\n\n  --chat--message--padding: var(--chat--spacing);\n\n  --chat--message--border-radius: var(--chat--border-radius);\n\n  --chat--message-line-height: 1.5;\n\n  --chat--message--margin-bottom: calc(var(--chat--spacing) * 1);\n\n  --chat--message--bot--background: var(--chat--color-white);\n\n  --chat--message--bot--color: var(--chat--color-dark);\n\n  --chat--message--bot--border: none;\n\n  --chat--message--user--background: var(--chat--color--secondary);\n\n  --chat--message--user--color: var(--chat--color-white);\n\n  --chat--message--user--border: none;\n\n  --chat--message--pre--background: rgba(0, 0, 0, 0.05);\n\n  --chat--messages-list--padding: var(--chat--spacing);\n\n\n\n  /* Toggle Button */\n\n  --chat--toggle--size: 64px;\n\n  --chat--toggle--width: var(--chat--toggle--size);\n\n  --chat--toggle--height: var(--chat--toggle--size);\n\n  --chat--toggle--border-radius: 50%;\n\n  --chat--toggle--background: var(--chat--color--primary);\n\n  --chat--toggle--hover--background: var(--chat--color--primary-shade-50);\n\n  --chat--toggle--active--background: var(--chat--color--primary--shade-100);\n\n  --chat--toggle--color: var(--chat--color-white);\n\n\n\n  /* Input Area */\n\n  --chat--textarea--height: 50px;\n\n  --chat--textarea--max-height: 30rem;\n\n  --chat--input--font-size: inherit;\n\n  --chat--input--border: 0;\n\n  --chat--input--border-radius: 0;\n\n  --chat--input--padding: 0.8rem;\n\n  --chat--input--background: var(--chat--color-white);\n\n  --chat--input--text-color: initial;\n\n  --chat--input--line-height: 1.5;\n\n  --chat--input--placeholder--font-size: var(--chat--input--font-size);\n\n  --chat--input--border-active: 0;\n\n  --chat--input--left--panel--width: 2rem;\n\n\n\n  /* Button Styles */\n\n  --chat--button--padding: calc(var(--chat--spacing) * 5 / 8) var(--chat--spacing);\n\n  --chat--button--border-radius: var(--chat--border-radius);\n\n  --chat--button--font-size: 1rem;\n\n  --chat--button--line-height: 1;\n\n  --chat--button--color--primary: var(--chat--color-light);\n\n  --chat--button--background--primary: var(--chat--color--secondary);\n\n  --chat--button--border--primary: none;\n\n  --chat--button--color--primary--hover: var(--chat--color-light);\n\n  --chat--button--background--primary--hover: var(--chat--color-secondary-shade-50);\n\n  --chat--button--border--primary--hover: none;\n\n  --chat--button--color--primary--disabled: var(--chat--color-light);\n\n  --chat--button--background--primary--disabled: #81bbb1;\n\n  --chat--button--border--primary--disabled: none;\n\n  --chat--button--color--secondary: var(--chat--color-light);\n\n  --chat--button--background--secondary: hsl(0, 0%, 58%);\n\n  --chat--button--border--secondary: none;\n\n  --chat--button--color--secondary--hover: var(--chat--color-light);\n\n  --chat--button--background--secondary--hover: hsl(0, 0%, 51%);\n\n  --chat--button--border--secondary--hover: none;\n\n  --chat--button--color--secondary--disabled: var(--chat--color-light);\n\n  --chat--button--background--secondary--disabled: hsl(0, 0%, 78%);\n\n  --chat--button--border--secondary--disabled: none;\n\n  --chat--close--button--color-hover: var(--chat--color--primary);\n\n\n\n  /* Send and File Buttons */\n\n  --chat--input--send--button--background: var(--chat--color-white);\n\n  --chat--input--send--button--color: var(--chat--color--secondary);\n\n  --chat--input--send--button--background-hover: var(--chat--color--primary-shade-50);\n\n  --chat--input--send--button--color-hover: var(--chat--color-secondary-shade-50);\n\n  --chat--input--file--button--background: var(--chat--color-white);\n\n  --chat--input--file--button--color: var(--chat--color--secondary);\n\n  --chat--input--file--button--background-hover: var(--chat--input--file--button--background);\n\n  --chat--input--file--button--color-hover: var(--chat--color-secondary-shade-50);\n\n  --chat--files-spacing: 0.25rem;\n\n\n\n  /* Body and Footer */\n\n  --chat--body--background: var(--chat--color-light);\n\n  --chat--footer--background: var(--chat--color-light);\n\n  --chat--footer--color: var(--chat--color-dark);\n\n}\n\n\n\n\n\n/* You can override any class styles, too. Right-click inspect in Chat UI to find class to override. */\n\n.chat-message {\n\nmax-width: 50%;\n\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "209b278b-35b2-4a5d-bf38-534e012e94c6",
+      "name": "Input chat",
+      "webhookId": "b05d2adb-dca6-4f1a-90c0-31ab8e656f42"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input chat": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "15e4a7c7-b6b5-4b3f-8805-1a5b077f557f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c1ec325818f07a0705dbacbf3e3c030d0dfd6a089e8001c61cb63a84c14c851"
+  },
+  "id": "MgyHQlIELDK602Jz",
+  "tags": []
+}
