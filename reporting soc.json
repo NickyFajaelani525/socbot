@@ -3,21 +3,6 @@
   "nodes": [
     {
       "parameters": {
-        "options": {
-          "systemMessage": "Kamu adalah asisten SOC yang bertugas mengekstrak data laporan insiden keamanan ke format JSON murni. JANGAN berikan kalimat pembuka atau penutup. Cukup berikan objek JSON.\n\nAturan Ekstraksi Data:\nDATE: Ambil dari 'Timestamp', ubah ke format DD-MMM-YY (Contoh: 14-Mar-26).\nEVENT TIME: Ambil jam:menit dari 'Timestamp' (Contoh: 21:37).\nTICKET DATE & EVENT TIME: Isi sama dengan format DATE (DD-MMM-YY).\nTICKET : Ambil dari TICKET.\nKODE REPORT: Ambil dari 'Ticket Id'.\nCOUNTRY: Ambil nama negara di dalam kurung pada bagian 'IP Address' atau 'Source IP'.\nSRC IP: Ambil angka IP saja dari bagian 'IP Address' atau 'Source IP'.\nDST IP: Ambil angka IP saja dari bagian 'Destination IP'.\nSRC PORT: Ambil angka dari 'Source Port'.\nDST PORT: Ambil angka dari 'Destination Port'.\nALERT SCORE: Ambil angka dari 'Rule Level'.\nALERT TYPE: Ambil dari 'Severity'.\nEXPLOIT SIGNATURE: Ambil dari 'Signature'.\nSTATUS EVENT: Selalu isi dengan \"InProgress\".\nFIELD LAINNYA: Jika tidak ada di laporan, isi dengan \"-\".\n\nOUTPUT HARUS DALAM FORMAT JSON SEPERTI INI:\n{\n  \"NO\": 0,\n  \"DATE\": \"\",\n  \"EVENT_TIME\": \"\",\n  \"TICKET_DATE_EVENT_TIME\": \"\",\n  \"SOC_RESPONSE_TIME\": \"-\",\n  \"KODE_REPORT\": \"\",\n  \"TICKET\": \"-\",\n  \"COUNTRY\": \"\",\n  \"SRC_IP\": \"\",\n  \"DST_IP\": \"\",\n  \"SRC_PORT\": \"\",\n  \"DST_PORT\": \"\",\n  \"ALERT_SCORE\": \"\",\n  \"ALERT_TYPE\": \"\",\n  \"PHASE_KILL_CHAIN\": \"-\",\n  \"EXPLOIT_SIGNATURE\": \"\",\n  \"FILE_NAME\": \"-\",\n  \"CVE\": \"-\",\n  \"STATUS_VIRUSTOTAL\": \"-\",\n  \"STATUS_KASPERSKY\": \"-\",\n  \"STATUS_EVENT\": \"InProgress\",\n  \"THREAT_CATEGORY\": \"-\",\n  \"ACTION_SOAR\": \"-\"\n}\t"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
-      "position": [
-        208,
-        0
-      ],
-      "id": "5efe9dc6-dd81-45c6-8bfb-c26ba506ccfd",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
         "model": "llama-3.1-8b-instant",
         "options": {}
       },
@@ -41,17 +26,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE",
+          "value": "1rahfNxMKSBzuRwHzRJZe8JLJ9qiTCbhGqlKnLuuOFnE",
           "mode": "list",
-          "cachedResultName": "example:",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE/edit?usp=drivesdk"
+          "cachedResultName": "NEW Daily Report SPS - KS - KIT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rahfNxMKSBzuRwHzRJZe8JLJ9qiTCbhGqlKnLuuOFnE/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
+          "value": 196753699,
           "mode": "list",
-          "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncuPW42ZAKXQtDIUxyfPga5OG1JpwcMouH0QBJAxylE/edit#gid=0"
+          "cachedResultName": "Maret 2026",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rahfNxMKSBzuRwHzRJZe8JLJ9qiTCbhGqlKnLuuOFnE/edit#gid=196753699"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -67,18 +52,13 @@
             "DST PORT": "={{ $json.DST_PORT }}",
             "ALERT SCORE": "={{ $json.ALERT_SCORE }}",
             "ALERT TYPE": "={{ $json.ALERT_TYPE }}",
-            "EXPLOIT SIGNATURE": "={{ $json.EXPLOIT_SIGNATURE }}",
-            "STATUS\nEVENT": "={{ $json.STATUS_EVENT }}",
-            "PHASE KILL CHAIN": "=-",
+            "PHASE KILL CHAIN": "-",
             "TACTIC": "-",
-            "FILE NAME": "={{ $json.FILE_NAME }}",
-            "CVE": "={{ $json.CVE }}",
-            "STATUS\nVIRUSTOTAL": "={{ $json.STATUS_VIRUSTOTAL }}",
-            "STATUS\nKASPERSKY\n(CATEGORY TECHNIQUE)": "={{ $json.STATUS_KASPERSKY }}",
-            "THREAT CATEGORY": "={{ $json.THREAT_CATEGORY }}",
-            "ACTION SOAR": "={{ $json.ACTION_SOAR }}",
-            "SOC RESPONSE TIME": "-",
-            "TICKET": "={{ $json.TICKET }}"
+            "EXPLOIT SIGNATURE": "-",
+            "FILE NAME": "-",
+            "CVE": "-",
+            "STATUS\nEVENT": "={{ $json.STATUS_EVENT }}",
+            "THREAT CATEGORY": "={{ $json.THREAT_CATEGORY }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -127,7 +107,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "KODE REPORT",
@@ -146,7 +126,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "COUNTRY",
@@ -218,8 +198,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "TACTIC",
@@ -228,8 +207,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "EXPLOIT SIGNATURE",
@@ -247,8 +225,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "CVE",
@@ -257,8 +234,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "STATUS\nVIRUSTOTAL",
@@ -268,7 +244,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "STATUS\nKASPERSKY\n(CATEGORY TECHNIQUE)",
@@ -278,7 +254,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "STATUS\nEVENT",
@@ -307,7 +283,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "STATUS\nALIENVAULT\n(TECHNIQUE / VIRUS)",
@@ -358,16 +334,6 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
-            },
-            {
-              "id": "output",
-              "displayName": "output",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -385,8 +351,8 @@
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "1Iwwb0Nh9QRt4wUd",
-          "name": "Google Sheets account"
+          "id": "x32FM2UvOebm7KzX",
+          "name": "Google Sheets account 3"
         }
       }
     },
@@ -413,21 +379,9 @@
               "type": "string"
             },
             {
-              "id": "fe997fb1-1d90-448d-a477-1fcd75b88533",
-              "name": "SOC_RESPONSE_TIME",
-              "value": "={{ JSON.parse($json.output).SOC_RESPONSE_TIME }}",
-              "type": "string"
-            },
-            {
               "id": "759fe58e-8bdf-4e3a-9670-721b2afb1309",
               "name": "KODE_REPORT",
               "value": "={{ JSON.parse($json.output).KODE_REPORT }}",
-              "type": "string"
-            },
-            {
-              "id": "4007f01c-a9b0-4c33-91cd-c12b897082ac",
-              "name": "TICKET",
-              "value": "={{ JSON.parse($json.output).TICKET }}",
               "type": "string"
             },
             {
@@ -491,18 +445,6 @@
               "type": "string"
             },
             {
-              "id": "d9c4ac3c-f98b-4880-b6ec-de60459ede92",
-              "name": "STATUS_VIRUSTOTAL",
-              "value": "={{ JSON.parse($json.output).STATUS_VIRUSTOTAL }}",
-              "type": "string"
-            },
-            {
-              "id": "b27abad3-d51b-44c8-bf37-ed84a9d81434",
-              "name": "STATUS_KASPERSKY",
-              "value": "={{ JSON.parse($json.output).STATUS_KASPERSKY }}",
-              "type": "string"
-            },
-            {
               "id": "0e0fbcf0-7485-44b3-81ac-bd73431c3906",
               "name": "STATUS_EVENT",
               "value": "={{ JSON.parse($json.output).STATUS_EVENT }}",
@@ -512,12 +454,6 @@
               "id": "ecfc5c2d-d106-4578-8728-14a0d5e3aa5d",
               "name": "THREAT_CATEGORY",
               "value": "={{ JSON.parse($json.output).THREAT_CATEGORY }}",
-              "type": "string"
-            },
-            {
-              "id": "d0aace40-d585-499a-bb92-a220954b5a1c",
-              "name": "ACTION_SOAR",
-              "value": "={{ JSON.parse($json.output).ACTION_SOAR }}",
               "type": "string"
             }
           ]
@@ -553,6 +489,21 @@
       "id": "209b278b-35b2-4a5d-bf38-534e012e94c6",
       "name": "Input chat",
       "webhookId": "b05d2adb-dca6-4f1a-90c0-31ab8e656f42"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah asisten SOC yang bertugas mengekstrak data laporan insiden keamanan ke format JSON murni. JANGAN berikan kalimat pembuka atau penutup. Cukup berikan objek JSON.\n\nAturan Ekstraksi Data:\nDATE: Ambil dari 'Timestamp', ubah ke format Contoh: 14-Maret-26).\nEVENT TIME: Ambil jam:menit dari 'Timestamp' (Contoh: 21:37).\nTICKET DATE & EVENT TIME: Isi sama dengan format DATE (DD-MMM-YY).\nKODE REPORT: Ambil dari 'Ticket Id'.\nCOUNTRY: Ambil nama negara pada bagian 'IP Address' atau 'Source IP'.\nSRC IP: Ambil angka IP saja dari bagian 'IP Address' atau 'Source IP'.\nDST IP: Ambil angka IP saja dari bagian 'Destination IP'.\nSRC PORT: Ambil angka dari 'Source Port'.\nDST PORT: Ambil angka dari 'Destination Port'.\nALERT SCORE: Ambil angka dari 'Rule Level'.\nALERT TYPE: Ambil dari 'Signature'.\nSTATUS EVENT: Selalu isi dengan \"InProgress\".\n\nOUTPUT HARUS DALAM FORMAT JSON SEPERTI INI:\n{\n  \"DATE\": \"\",\n  \"EVENT_TIME\": \"\",\n  \"TICKET_DATE_EVENT_TIME\": \"\",\n  \"KODE_REPORT\": \"\",\n  \"TICKET\": \"-\",\n  \"COUNTRY\": \"\",\n  \"SRC_IP\": \"\",\n  \"DST_IP\": \"\",\n  \"SRC_PORT\": \"\",\n  \"DST_PORT\": \"\",\n  \"ALERT_SCORE\": \"\",\n  \"ALERT_TYPE\": \"\",\n  \"PHASE_KILL_CHAIN\": \"-\",\n  \"EXPLOIT_SIGNATURE\": \"-\",\n  \"FILE_NAME\": \"-\",\n  \"CVE\": \"-\",\n  \"STATUS_EVENT\": \"InProgress\",\n  \"THREAT_CATEGORY\": \"External\",\n}\t"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5efe9dc6-dd81-45c6-8bfb-c26ba506ccfd",
+      "name": "AI Agent"
     }
   ],
   "pinData": {},
@@ -563,17 +514,6 @@
           {
             "node": "AI Agent",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
             "index": 0
           }
         ]
@@ -600,6 +540,17 @@
           }
         ]
       ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -608,7 +559,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "15e4a7c7-b6b5-4b3f-8805-1a5b077f557f",
+  "versionId": "a20a8f55-da7c-417b-bbc3-60b14361e5aa",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "1c1ec325818f07a0705dbacbf3e3c030d0dfd6a089e8001c61cb63a84c14c851"
